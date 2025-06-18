@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import os
-from langchain_tableau.tools.simple_datasource_qa import initialize_simple_datasource_qa
+from simple_datasource_qa import initialize_simple_datasource_qa
 
 app = FastAPI()
 
