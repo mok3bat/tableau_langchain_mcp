@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import os
-from simple_datasource_qa import initialize_simple_datasource_qa
+from pkg.simple_datasource_qa import initialize_simple_datasource_qa
 
 app = FastAPI()
 
