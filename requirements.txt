@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+tableauserverclient
+requests
+pandas
+beautifulsoup4
+lxml
+langchain-tableau==0.4.39
