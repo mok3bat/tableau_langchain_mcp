@@ -51,7 +51,7 @@ setup(
     },
     entry_points={
         "console_scripts": [
-            "tableau-langchain-mcp=pkg.server:main",
+            "tableau-langchain-mcp=tableau_langchain_mcp.server:main",
         ],
     },
 )
