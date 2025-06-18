@@ -56,7 +56,7 @@ packages = ["tableau_langchain_mcp"]
 
 [tool.black]
 line-length = 100
-target-version = ['py312']
+target-version = ['py38']
 
 [tool.isort]
 profile = "black"
