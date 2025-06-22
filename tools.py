@@ -18,6 +18,7 @@ import json
 app = FastAPI()       # ← You control the app
 mcp = FastMCP(app=app)  # ← Inject it into FastMCP
 
+
 class EnvManager:
     @staticmethod
     def get(key: str) -> str:
@@ -223,3 +224,7 @@ def augment_datasource_metadata_tool(
         previous_errors=previous_errors,
         previous_vds_payload=previous_vds_payload
     )
+
+# ✅ ensure MCP is referenced so decorators are executed
+def activate_mcp():
+    return mcp
