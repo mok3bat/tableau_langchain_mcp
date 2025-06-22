@@ -11,23 +11,31 @@ import os
 # --------------------------
 # MCP Setup
 # --------------------------
+
 mcp = FastMCP("MathServer")
+tool_registry = {}
 
 @mcp.tool()
 def add(a: int, b: int) -> int:
     return a + b
 
+tool_registry["add"] = add
+
 @mcp.tool()
 def subtract(a: int, b: int) -> int:
     return a - b
+tool_registry["subtract"] = subtract
 
 @mcp.tool()
 def multiply(a: int, b: int) -> int:
     return a * b
 
+tool_registry["multiply"] = multiply
 # --------------------------
 # Handler for /messages
 # --------------------------
+
+
 async def handle_messages(request: Request):
     try:
         data = await request.json()
@@ -46,14 +54,17 @@ async def handle_messages(request: Request):
         elif action == "execute":
             tool_name = data.get("tool")
             params = data.get("data", {})
-            result = mcp.execute(tool_name, **params)
+
+            tool_func = tool_registry.get(tool_name)
+            if not tool_func:
+                raise ValueError(f"Tool '{tool_name}' not found")
+
+            result = tool_func(**params)
+
             response = {
                 "type": "response",
                 "data": result
             }
-
-        else:
-            raise ValueError(f"Unknown action: {action}")
 
         return JSONResponse(response)
 
