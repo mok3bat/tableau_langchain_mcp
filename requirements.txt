@@ -1,5 +1,6 @@
 # Core Requirements
 fastmcp
+fastapi
 requests
 aiohttp
 
