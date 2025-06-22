@@ -2,7 +2,6 @@
 
 from dotenv import load_dotenv
 from tools import mcp  # This now works correctly because it's one-way
-import Test
 
 load_dotenv()
 
