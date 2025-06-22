@@ -15,7 +15,8 @@ from mcp.server.fastmcp import FastMCP
 import json
 
 mcp = FastMCP(cors=True)  # FastMCP instance to register 
-app = mcp._app  # <-- temporarily using internal _app if available
+# ✅ Manually extract and expose the FastAPI app
+app = mcp.router  # ← this is the FastAPI app inside FastMCP
 
 class EnvManager:
     @staticmethod
