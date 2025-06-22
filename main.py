@@ -1,12 +1,15 @@
-# main.py
+from mcp.server.fastmcp import FastMCP
 
-import os
-from tools import mcp, say_hi_world  # ✅ Must import tools to run @mcp.tool decorators
+mcp = FastMCP()
+
+@mcp.tool()
+def say_hi_world() -> str:
+    return "Hi from MCP"
+
+fastmcp_asgi_app = mcp.asgi()
 
 if __name__ == "__main__":
-    # Could also use 'sse' transport, host="0.0.0.0" required for Cloud Run.
-    
-    mcp.register_tool(say_hi_world)
-
-    # Expose ASGI app
-    fastmcp_asgi_app = mcp.asgi()
+    import uvicorn
+    import os
+    port = int(os.getenv("PORT", 8000))
+    uvicorn.run(fastmcp_asgi_app, host="0.0.0.0", port=port)
