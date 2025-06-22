@@ -2,8 +2,7 @@
 
 import os
 from tools import mcp  # This now works correctly because it's one-way
-
-load_dotenv()
+#
 
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 8000))  # Railway sets this dynamically
