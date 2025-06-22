@@ -3,6 +3,7 @@ fastmcp
 fastapi
 requests
 aiohttp
+uvicorn
 
 # Auth & Security
 pyjwt
