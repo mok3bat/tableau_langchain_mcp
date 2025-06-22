@@ -14,7 +14,7 @@ from utils.simple_datasource_qa import (
 from mcp.server.fastmcp import FastMCP
 import json
 
-mcp = FastMCP()  # FastMCP instance to register tools
+mcp = FastMCP(cors=True)  # FastMCP instance to register tools
 
 class EnvManager:
     @staticmethod
