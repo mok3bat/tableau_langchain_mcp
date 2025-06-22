@@ -1,6 +1,6 @@
 # main.py
 
-from dotenv import load_dotenv
+import os
 from tools import mcp  # This now works correctly because it's one-way
 
 load_dotenv()
