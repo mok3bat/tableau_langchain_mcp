@@ -12,11 +12,11 @@ from utils.simple_datasource_qa import (
     augment_datasource_metadata
 )
 from mcp.server.fastmcp import FastMCP
+from fastapi import FastAPI
 import json
 
-mcp = FastMCP(cors=True)  # FastMCP instance to register 
-# ✅ Manually extract and expose the FastAPI app
-app = mcp.router  # ← this is the FastAPI app inside FastMCP
+app = FastAPI()       # ← You control the app
+mcp = FastMCP(app=app)  # ← Inject it into FastMCP
 
 class EnvManager:
     @staticmethod
