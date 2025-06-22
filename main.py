@@ -1,14 +1,15 @@
 # main.py
 
 import os
-import uvicorn
-import tools  # ✅ Must import tools to run @mcp.tool decorators
+from tools import mcp  # ✅ Must import tools to run @mcp.tool decorators
+import asyncio
 
-# Use the app and activate the tool bindings
-app = tools.app
-tools.activate_tools()  # ✅ You must call this to bind the routes
-
-# Run using Railway's PORT
 if __name__ == "__main__":
-    port = int(os.getenv("PORT", 8000))
-    uvicorn.run(app, host="0.0.0.0", port=port)
+    # Could also use 'sse' transport, host="0.0.0.0" required for Cloud Run.
+    asyncio.run(
+        mcp.run_async(
+            transport="sse", 
+            host="0.0.0.0", 
+            port=os.getenv("PORT", 8080),
+        )
+    )
