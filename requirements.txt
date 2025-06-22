@@ -4,6 +4,8 @@ fastapi
 requests
 aiohttp
 asyncio
+starlette
+logging
 
 
 # Auth & Security
