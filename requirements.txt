@@ -3,12 +3,13 @@ fastmcp
 fastapi
 requests
 aiohttp
-uvicorn
+
 
 # Auth & Security
 pyjwt
 
 # Data Validation
-python-dotenv
+# python-dotenv
 
 # Optional (for production)
+uvicorn
