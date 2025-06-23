@@ -109,6 +109,8 @@ middleware = [
 routes = [
     Route("/messages", endpoint=handle_messages, methods=["POST"]),
     Route("/sse/messages", endpoint=sse_messages, methods=["POST"]),
+    Route("/sse", endpoint=sse_messages, methods=["POST"]),
+    Route("/sse/message", endpoint=sse_messages, methods=["POST"]),
 ]
 
 
