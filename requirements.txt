@@ -1,9 +1,7 @@
 # Core Requirements
 fastmcp
-fastapi
 requests
 aiohttp
-asyncio
 starlette
 logging
 
@@ -15,4 +13,4 @@ pyjwt
 # python-dotenv
 
 # Optional (for production)
-# uvicorn
+uvicorn

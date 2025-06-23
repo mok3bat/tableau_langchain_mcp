@@ -7,30 +7,8 @@ from starlette.middleware.cors import CORSMiddleware
 from mcp.server.fastmcp import FastMCP
 import logging
 import os
+from tools import mcp, tool_registry
 
-# --------------------------
-# MCP Setup
-# --------------------------
-
-mcp = FastMCP("MathServer")
-tool_registry = {}
-
-@mcp.tool()
-def add(a: int, b: int) -> int:
-    return a + b
-
-tool_registry["add"] = add
-
-@mcp.tool()
-def subtract(a: int, b: int) -> int:
-    return a - b
-tool_registry["subtract"] = subtract
-
-@mcp.tool()
-def multiply(a: int, b: int) -> int:
-    return a * b
-
-tool_registry["multiply"] = multiply
 # --------------------------
 # Handler for /messages
 # --------------------------
