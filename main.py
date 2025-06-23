@@ -13,14 +13,6 @@ from tools import mcp, tool_registry
 # Handler for /messages
 # --------------------------
 
-@mcp.tool()
-def say_hi_world() -> str:
-    """
-    Returns a simple greeting.
-    """
-    return "Hi World! MCP is working."
-tool_registry["say_hi_world"] = say_hi_world
-
 async def handle_messages(request: Request):
     try:
         data = await request.json()
