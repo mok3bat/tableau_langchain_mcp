@@ -2,7 +2,6 @@ from starlette.applications import Starlette
 from starlette.routing import Route, Mount
 from starlette.responses import JSONResponse, StreamingResponse
 from starlette.requests import Request
-from starlette.routing import Route
 from starlette.middleware import Middleware
 from starlette.middleware.cors import CORSMiddleware
 from mcp.server.fastmcp import FastMCP
@@ -94,10 +93,6 @@ async def sse_messages(request: Request):
     except Exception as e:
         return JSONResponse({"error": str(e)}, status_code=500)
 
-routes = [
-    Route("/messages", endpoint=handle_messages, methods=["POST"]),
-    Route("/sse/messages", endpoint=sse_messages, methods=["POST"]),
-]
 
 # --------------------------
 # Starlette App Setup
@@ -107,10 +102,13 @@ middleware = [
 ]
 
 routes = [
-    Route("/messages", endpoint=handle_messages, methods=["POST"]),
-    Route("/sse/messages", endpoint=sse_messages, methods=["POST"]),
-    Route("/sse", endpoint=sse_messages, methods=["POST"]),
-    Route("/sse/message", endpoint=sse_messages, methods=["POST"]),
+    Mount("/mcp", routes=[
+        Route("/messages", endpoint=handle_messages, methods=["POST"]),
+    ]),
+    # 🔧 These are the key SSE routes
+    Route("/sse/messages", endpoint=sse_messages, methods=["GET"]),
+    Route("/sse", endpoint=sse_messages, methods=["GET"]),
+    Route("/sse/message", endpoint=sse_messages, methods=["GET"]),
 ]
 
 
