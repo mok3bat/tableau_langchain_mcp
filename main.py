@@ -107,11 +107,10 @@ middleware = [
 ]
 
 routes = [
-    Mount("/mcp", routes=[
-        Route("/messages", endpoint=handle_messages, methods=["POST"]),
-    ]),
+    Route("/messages", endpoint=handle_messages, methods=["POST"]),
     Route("/sse/messages", endpoint=sse_messages, methods=["POST"]),
 ]
+
 
 app = Starlette(routes=routes, middleware=middleware)
 
