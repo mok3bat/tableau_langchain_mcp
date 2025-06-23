@@ -94,6 +94,10 @@ async def sse_messages(request: Request):
     except Exception as e:
         return JSONResponse({"error": str(e)}, status_code=500)
 
+routes = [
+    Route("/messages", endpoint=handle_messages, methods=["POST"]),
+    Route("/sse/messages", endpoint=sse_messages, methods=["POST"]),
+]
 
 # --------------------------
 # Starlette App Setup
@@ -106,7 +110,7 @@ routes = [
     Mount("/mcp", routes=[
         Route("/messages", endpoint=handle_messages, methods=["POST"]),
     ]),
-    Route("/messages", endpoint=handle_messages, methods=["POST"]),
+    Route("/sse/messages", endpoint=sse_messages, methods=["POST"]),
 ]
 
 app = Starlette(routes=routes, middleware=middleware)
