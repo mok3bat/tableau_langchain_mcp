@@ -106,9 +106,9 @@ routes = [
         Route("/messages", endpoint=handle_messages, methods=["POST"]),
     ]),
     # 🔧 These are the key SSE routes
-    Route("/sse/messages", endpoint=sse_messages, methods=["POST"]),
-    Route("/sse", endpoint=sse_messages, methods=["POST"]),
-    Route("/sse/message", endpoint=sse_messages, methods=["POST"]),
+    Route("/sse/messages", endpoint=sse_messages, methods=["GET"]),
+    Route("/sse", endpoint=sse_messages, methods=["GET"]),
+    Route("/sse/message", endpoint=sse_messages, methods=["GET"]),
 ]
 
 
