@@ -7,7 +7,11 @@ mcp = FastMCP("strava", stateless_http=True, headers=headers, host="0.0.0.0", po
 @mcp.tool()
 def get_activities():
     print('hello')
-    return "hello from MCP!"
+    return {
+        "content": [
+            { "type": "text", "text": "✅ Hello from deployed MCP!" }
+        ]
+    }
 
 
 app = FastAPI(title="Strava")
