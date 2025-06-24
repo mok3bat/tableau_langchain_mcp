@@ -108,6 +108,21 @@ def tableau_auth_tool() -> Dict[str, Any]:
     )
 
 
+@mcp.tool(description="Tool to Return a data dictionary of a published datasources to get the correct luid")
+def get_datasources_tool() -> Dict[str, Any]:
+    """
+    Queries Tableau's Metadata API to get a data dictionary of a published datasources to get related luid.
+
+    Returns:
+        Dict[str, Any]: Dictionary with datasource name, description, owner, and visible fields.
+    """
+
+    #Checks token cache and uses it if valid. Otherwise re-authenticates to get a fresh token.
+    token = TokenManager.get_or_refresh()
+    tableau_domain=EnvManager.get("TABLEAU_DOMAIN")
+
+    return get_data_dictionary(api_key=token, domain=tableau_domain)
+
 @mcp.tool(description="Tool to Return a data dictionary of a published datasource.")
 def get_data_dictionary_tool(datasource_luid: str) -> Dict[str, Any]:
     """
