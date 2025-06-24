@@ -5,14 +5,13 @@ aiohttp
 starlette
 logging
 fastapi
-contextlib
 
 
 # Auth & Security
 pyjwt
 
 # Data Validation
-# python-dotenv
+python-dotenv
 
 # Optional (for production)
 uvicorn
