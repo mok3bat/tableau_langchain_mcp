@@ -2,7 +2,7 @@ from mcp.server.fastmcp import FastMCP
 from fastapi import FastAPI
 
 headers= {"Accept": "application/json, text/event-stream"}
-mcp = FastMCP("strava", stateless_http=True, headers=headers, host="127.0.0.1", port=8000)
+mcp = FastMCP("strava", stateless_http=True, headers=headers, host="0.0.0.0", port=8000)
 
 @mcp.tool()
 def get_activities():
