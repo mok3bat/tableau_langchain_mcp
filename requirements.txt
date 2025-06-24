@@ -4,6 +4,7 @@ requests
 aiohttp
 starlette
 logging
+fastapi
 
 
 # Auth & Security
