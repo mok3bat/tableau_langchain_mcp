@@ -4,7 +4,7 @@ import os
 from typing import Dict, Any, Optional, Tuple
 from datetime import datetime, timedelta, timezone
 from utils.auth import jwt_connected_app
-from utils.metadata import get_data_dictionary
+from utils.metadata import get_data_dictionary, get_datasources
 from utils.prompts import vds_prompt_data, vds_schema, sample_queries, error_queries
 from utils.vizql_data_service import query_vds, query_vds_metadata
 from utils.simple_datasource_qa import (
@@ -121,7 +121,7 @@ def get_datasources_tool() -> Dict[str, Any]:
     token = TokenManager.get_or_refresh()
     tableau_domain=EnvManager.get("TABLEAU_DOMAIN")
 
-    return get_data_dictionary(api_key=token, domain=tableau_domain)
+    return get_datasources(api_key=token, domain=tableau_domain)
 
 @mcp.tool(description="Tool to Return a data dictionary of a published datasource.")
 def get_data_dictionary_tool(datasource_luid: str) -> Dict[str, Any]:
