@@ -5,7 +5,6 @@ from typing import Dict, Any, Optional, Tuple
 from datetime import datetime, timedelta, timezone
 from utils.auth import jwt_connected_app
 from utils.metadata import get_data_dictionary
-from utils.prompts import vds_prompt_data, vds_schema, sample_queries, error_queries
 from utils.vizql_data_service import query_vds, query_vds_metadata
 from utils.simple_datasource_qa import (
     get_headlessbi_data,
@@ -15,8 +14,13 @@ from utils.simple_datasource_qa import (
 from mcp.server.fastmcp import FastMCP
 import json
 
+# --------------------------
+# MCP Setup
+# --------------------------
 
-mcp = FastMCP(name="TableauTools", stateless_http=True) # FastMCP instance to register tools
+mcp = FastMCP("TableauMCP")
+tool_registry = {}
+
 
 class EnvManager:
     @staticmethod
@@ -81,12 +85,13 @@ class TokenManager:
         return token
 
 
-@mcp.tool(description="Tool to Return a simple greeting.")
+@mcp.tool()
 def say_hi_world() -> str:
     """
     Returns a simple greeting.
     """
     return "Hi World! MCP is working."
+tool_registry["say_hi_world"] = say_hi_world
 
 # As we added Token Manager class, we can remove auth tool as it will be called from the get_data_dictionary_tool.
 #@mcp.tool()
@@ -108,7 +113,7 @@ def tableau_auth_tool() -> Dict[str, Any]:
     )
 
 
-@mcp.tool(description="Tool to Return a data dictionary of a published datasource.")
+@mcp.tool()
 def get_data_dictionary_tool(datasource_luid: str) -> Dict[str, Any]:
     """
     Queries Tableau's Metadata API to get a data dictionary of a published datasource.
@@ -126,7 +131,9 @@ def get_data_dictionary_tool(datasource_luid: str) -> Dict[str, Any]:
 
     return get_data_dictionary(api_key=token, domain=tableau_domain, datasource_luid=datasource_luid)
 
-@mcp.tool(description="Tool to Return a metadata of a published datasource.")
+tool_registry["get_data_dictionary_tool"] = get_data_dictionary_tool
+
+@mcp.tool()
 def query_vds_metadata_tool(datasource_luid: str) -> Dict[str, Any]:
     """
     Authenticates with Tableau and retrieves metadata from VizQL Data Service for the given datasource.
@@ -142,7 +149,9 @@ def query_vds_metadata_tool(datasource_luid: str) -> Dict[str, Any]:
 
     return query_vds_metadata(api_key=token, datasource_luid=datasource_luid, url=domain)
 
-@mcp.tool(description="Tool to Return a data query of a published datasource.")
+tool_registry["getquery_vds_metadata_tool_data_dictionary_tool"] = query_vds_metadata_tool
+
+@mcp.tool()
 def query_vds_tool(datasource_luid: str, query: Dict[str, Any]) -> Dict[str, Any]:
     """
     Authenticates with Tableau and runs a data query via VizQL Data Service.
@@ -159,7 +168,9 @@ def query_vds_tool(datasource_luid: str, query: Dict[str, Any]) -> Dict[str, Any
 
     return query_vds(api_key=token, datasource_luid=datasource_luid, url=domain, query=query)
 
-@mcp.tool(description="Tool to Return a markdown of a published datasource, ready for llm to use.")
+tool_registry["query_vds_tool"] = query_vds_tool
+
+@mcp.tool()
 def get_headlessbi_data_tool(payload: Dict[str, Any], datasource_luid: str) -> str:
     """
     Queries Tableau using a JSON string payload and returns results as markdown.
@@ -175,7 +186,9 @@ def get_headlessbi_data_tool(payload: Dict[str, Any], datasource_luid: str) -> s
     domain = EnvManager.get("TABLEAU_DOMAIN")
     return get_headlessbi_data(payload=payload, url=domain, api_key=token, datasource_luid=datasource_luid)
 
-@mcp.tool(description="Tool to Return a sample values of a published datasource.")
+tool_registry["get_headlessbi_data_tool"] = get_headlessbi_data_tool
+
+@mcp.tool()
 def get_values_tool(datasource_luid: str, caption: str) -> list:
     """
     Retrieves sample values (max 4) for a given field caption from a datasource.
@@ -191,7 +204,9 @@ def get_values_tool(datasource_luid: str, caption: str) -> list:
     domain = EnvManager.get("TABLEAU_DOMAIN")
     return get_values(api_key=token, url=domain, datasource_luid=datasource_luid, caption=caption)
 
-@mcp.tool(description="Tool to Return a augmented metadata of a published datasource.")
+tool_registry["get_values_tool"] = get_values_tool
+
+@mcp.tool()
 def augment_datasource_metadata_tool(
     task: str,
     datasource_luid: str,
@@ -214,12 +229,6 @@ def augment_datasource_metadata_tool(
     """
     token = TokenManager.get_or_refresh()
     domain = EnvManager.get("TABLEAU_DOMAIN")
-   
-    vds_prompt_data['vds_schema'] = vds_schema
-    vds_prompt_data['sample_queries'] = sample_queries
-    vds_prompt_data['error_queries'] = error_queries
-    prompt = vds_prompt_data
-
     return augment_datasource_metadata(
         task=task,
         api_key=token,
@@ -229,3 +238,6 @@ def augment_datasource_metadata_tool(
         previous_errors=previous_errors,
         previous_vds_payload=previous_vds_payload
     )
+
+tool_registry["augment_datasource_metadata_tool"] = augment_datasource_metadata_tool
+
