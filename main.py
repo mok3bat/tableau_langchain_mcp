@@ -10,7 +10,7 @@ def get_activities():
     return "hello from MCP!"
 
 
-app = FastAPI(title="Strava", lifespan=lambda app: mcp.session_manager.run())
+app = FastAPI(title="Strava")
 app.mount("/mcp", mcp.streamable_http_app())
 
 if __name__ == "__main__":
