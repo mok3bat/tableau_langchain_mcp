@@ -1,21 +1,19 @@
 from mcp.server.fastmcp import FastMCP
 from fastapi import FastAPI
 
-headers= {"Accept": "application/json, text/event-stream"}
-mcp = FastMCP("strava", stateless_http=True, headers=headers, host="0.0.0.0", port=8000)
+mcp = FastMCP(
+    "hello-mcp",
+    transport="streamable-http",
+    stateless_http=True
+)
 
 @mcp.tool()
-def get_activities():
-    print('hello')
+def say_hi() -> dict:
     return {
         "content": [
-            { "type": "text", "text": "✅ Hello from deployed MCP!" }
+            { "type": "text", "text": "👋 Hello from deployed MCP!" }
         ]
     }
 
-
-app = FastAPI(title="Strava")
+app = FastAPI()
 app.mount("/mcp", mcp.streamable_http_app())
-
-if __name__ == "__main__":
-    mcp.run(transport='streamable-http')
